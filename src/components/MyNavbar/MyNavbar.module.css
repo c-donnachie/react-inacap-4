@@ -1,0 +1,11 @@
+.container {
+    display: flex;
+    position: sticky;
+    top: 0;
+    background-color: black;
+    height: 60px;
+    justify-content: space-between;
+    align-items: center;
+    padding-right: 30px;
+    padding-left: 30px;
+}

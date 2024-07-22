@@ -1,0 +1,6 @@
+.bg {
+    background: rgb(2,0,36);
+    background: linear-gradient(61deg, rgba(2,0,36,1) 0%, rgba(0,0,0,1) 82%, rgba(62,26,75,1) 100%);
+    height: 100vh;
+    overflow-y: auto;
+}
