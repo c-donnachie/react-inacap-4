@@ -1,22 +1,23 @@
 import * as React from 'react'
 import { PrimaryLayout } from '@/layouts/PrimaryLayout/PrimaryLayout'
-import { useNavigate, useParams } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import { useSelectedData } from '@/context/SelectedDataContext'
 import { Button, Input } from '@nextui-org/react'
 import { GoBack } from '@/components/GoBack/GoBack'
 import { toast } from 'react-toastify'
+import { apiUpdateTipoGestion } from '@/services/apiTipoGestionService'
 
 export const EditTipoGestion = () => {
     const navigate = useNavigate()
-    const { selectedData: data } = useSelectedData()
+    const { selectedData: data  } = useSelectedData()
 
     const inputRef = React.useRef(null)
 
     const [newData, setNewData] = React.useState({
-        id_tipo_gestion: data.id_tipo_gestion,
-        nombre_tipo_gestion: data.nombre_tipo_gestion,
-        fecha_registro: data.fecha_registro,
+        nombre_tipo_gestion: data.nombre
     })
+
+    const { id } = data
     const { nombre_tipo_gestion } = newData
 
     const [errorMessage, setErrorMessage] = React.useState('');
@@ -34,11 +35,11 @@ export const EditTipoGestion = () => {
 
     const handleChange = (e) => {
         const { name, value } = e.target
-        setNewResultado((prevState) => ({
+        setNewData((prevState) => ({
             ...prevState,
             [name]: value
         }))
-        if (nombre_resultado.trim() === '') {
+        if (nombre_tipo_gestion.trim() === '') {
             setErrorMessage('Ingresa un nombre');
             setIsInvalid(true);
             return;
@@ -52,7 +53,7 @@ export const EditTipoGestion = () => {
             return;
         }
         try {
-            await apiUpdateResultado(id, newData)
+            await apiUpdateTipoGestion(id, newData)
             toast.success('Resultado actualizado')
             navigate(-1)
         } catch (error) {
@@ -62,13 +63,13 @@ export const EditTipoGestion = () => {
 
     return (
         <PrimaryLayout>
-            <h1 className='text-4xl font-semibold'>EditResultado</h1>
+            <h1 className='text-4xl font-semibold'>Editar tipo gestion {id}</h1>
 
             <GoBack />
 
             <div className='flex flex-col mt-10 w-[16%]'>
                 <Input
-                    name='nombre_resultado'
+                    name='nombre_tipo_gestion'
                     type='text'
                     label='Nombre'
                     value={newData.nombre_tipo_gestion}

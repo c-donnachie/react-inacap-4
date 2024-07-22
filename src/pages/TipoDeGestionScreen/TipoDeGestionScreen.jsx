@@ -32,16 +32,23 @@ export const TipoDeGestionScreen = () => {
     navigate(`/edit-tipo-gestion`)
   }, [navigate, setSelectedData])
 
-  const handleOpenDeleteModal = React.useCallback((id_resultado) => {
+  // Recibe el parametro de myTable
+  const handleOpenDeleteModal = React.useCallback((id) => {
     onOpen()
-    setSelectedId(id_resultado)
+    setSelectedId(id)
   }, [onOpen, setSelectedId])
 
   const handleDelete = React.useCallback(async () => {
-    await apiDeleteTipoGestion(selectedId)
-    refetch()
-    onClose()
-    toast(`Resultado ${selectedId} eliminado`)
+    try {
+      await apiDeleteTipoGestion(selectedId)
+      refetch()
+      onClose()
+      toast(`Resultado ${selectedId} eliminado`)
+    } catch (error) {
+      console.error(error)
+      toast.error('Tipo gestion relacionada a un registro')
+      onClose()
+    }
   }, [selectedId, refetch, onClose])
 
 

@@ -10,14 +10,13 @@ import { toast } from 'react-toastify'
 export const EditResultado = () => {
     const navigate = useNavigate()
     const { selectedData: data } = useSelectedData()
-    const { id } = useParams()
 
     const inputRef = React.useRef(null)
     const [newResultado, setNewResultado] = React.useState({
-        id_resultado: id,
-        nombre_resultado: data.nombre_resultado
+        id_resultado: data.id,
+        nombre_resultado: data.nombre
     })
-    const { nombre_resultado } = newResultado
+    const { nombre_resultado, id_resultado: id } = newResultado
 
     const [errorMessage, setErrorMessage] = React.useState('');
     const [isInvalid, setIsInvalid] = React.useState(false);

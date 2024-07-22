@@ -38,10 +38,16 @@ export const ResultadosScreen = React.memo(() => {
     }, [onOpen, setSelectedId])
 
     const handleDelete = React.useCallback(async () => {
-        await apiDeleteResultados(selectedId)
-        refetch()
-        onClose()
-        toast(`Resultado ${selectedId} eliminado`)
+        try {
+            await apiDeleteResultados(selectedId)
+            refetch()
+            onClose()
+            toast(`Resultado ${selectedId} eliminado`)
+        } catch (error) {
+            console.error(error)
+            toast.error('Tipo gestion relacionada a un registro')
+            onClose()
+        }
     }, [selectedId, refetch, onClose])
 
     return (
