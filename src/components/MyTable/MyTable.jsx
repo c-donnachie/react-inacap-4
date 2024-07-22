@@ -1,4 +1,4 @@
-import React from "react";
+import * as React from "react";
 import {
     Table,
     TableHeader,
@@ -14,8 +14,11 @@ import {
     DropdownItem,
     Pagination,
     Skeleton,
+    Tooltip,
 } from "@nextui-org/react";
 import { PlusIcon } from "@/icons/PlusIcon";
+import { EditIcon } from "@/icons/EditIcon";
+import { DeleteIcon } from "@/icons/DeleteIcon";
 import { VerticalDotsIcon } from '@/icons/VerticalDotsIcon';
 import { SearchIcon } from "@/icons/SearchIcon";
 import { columns } from "../../pages/resultados/data";
@@ -23,11 +26,11 @@ import { formatDate } from "@/utils/format";
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "actions"];
 
-export const MyTable = ({ data, dataLoading, handleEdit, handleDelete }) => {
+export const MyTable = React.memo(({ data, dataLoading, handleCreate, handleEdit, handleOpenDeleteModal }) => {
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
     const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
-    const [rowsPerPage, setRowsPerPage] = React.useState(10);
+    const [rowsPerPage, setRowsPerPage] = React.useState(16);
     const [sortDescriptor, setSortDescriptor] = React.useState({
         column: "name",
         direction: "ascending",
@@ -81,29 +84,33 @@ export const MyTable = ({ data, dataLoading, handleEdit, handleDelete }) => {
         switch (columnKey) {
             case "actions":
                 return (
-                    <div className="relative flex justify-end items-center gap-2">
-                        <Dropdown>
-                            <DropdownTrigger>
-                                <Button isIconOnly size="sm" variant="light">
-                                    <VerticalDotsIcon className="text-default-300" />
-                                </Button>
-                            </DropdownTrigger>
-                            <DropdownMenu>
-                                <DropdownItem
-                                    onClick={() => handleEdit(item)}
-                                >Edit</DropdownItem>
-                                <DropdownItem
-                                    onClick={() =>
-                                        handleDelete(item.id_resultado)}
-                                >Delete</DropdownItem>
-                            </DropdownMenu>
-                        </Dropdown>
+                    <div className="relative flex items-center justify-center gap-4">
+                        <div
+                            onClick={() => handleEdit(item)}
+                        >
+                            <Tooltip
+                                content="Editar">
+                                <span className="text-lg text-default-400 cursor-pointer active:opacity-50">
+                                    <EditIcon />
+                                </span>
+                            </Tooltip>
+                        </div>
+                        <div
+                            onClick={() => handleOpenDeleteModal(item.id_resultado)}
+                        >
+                            <Tooltip
+                                color="danger" content="Eliminar">
+                                <span className="text-lg text-danger cursor-pointer active:opacity-50">
+                                    <DeleteIcon />
+                                </span>
+                            </Tooltip>
+                        </div>
                     </div>
                 );
             default:
                 return cellValue;
         }
-    }, [handleDelete]);
+    }, []);
 
     React.useEffect(() => {
         setPage(1);
@@ -124,6 +131,7 @@ export const MyTable = ({ data, dataLoading, handleEdit, handleDelete }) => {
                             onValueChange={(value) => setFilterValue(value)}
                         />
                         <Button
+                            onPress={handleCreate}
                             color="primary"
                             endContent={<PlusIcon />}
                         >
@@ -178,7 +186,7 @@ export const MyTable = ({ data, dataLoading, handleEdit, handleDelete }) => {
                 )}
             </TableHeader>
             <TableBody emptyContent={
-                dataLoading ? (
+                dataLoading && filteredData.length === 0 ? (
                     <div className="flex flex-col gap-8 mt-4">
                         {Array.from({ length: 12 }).map((_, rowIndex) => (
                             <div className="flex flex-row gap-40" key={rowIndex}>
@@ -189,7 +197,7 @@ export const MyTable = ({ data, dataLoading, handleEdit, handleDelete }) => {
                         ))}
                     </div>
                 ) : "No data found"
-            } items={dataLoading ? [] : sortedItems}>
+            } items={sortedItems}>
                 {!dataLoading && sortedItems.map((item) => (
                     <TableRow key={item.id_resultado}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
@@ -198,4 +206,4 @@ export const MyTable = ({ data, dataLoading, handleEdit, handleDelete }) => {
             </TableBody>
         </Table>
     );
-};
+});

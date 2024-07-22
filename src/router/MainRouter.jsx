@@ -11,6 +11,7 @@ import { Resultados } from '@/pages/resultados/Resultados'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
 import { EditResultado } from '@/pages/resultados/components/EditResultado'
+import { CreateResultado } from '@/pages/resultados/components/CreateResultado'
 
 export const MainRouter = () => {
     return (
@@ -30,6 +31,7 @@ export const MainRouter = () => {
                 <Route path='/' Component={HomeScreen} />
                 <Route path='/tipo-gestion' Component={TipoDeGestion} />
                 <Route path='/resultados' Component={Resultados} />
+                <Route path='/create-resultado' Component={CreateResultado} />
                 <Route path='/edit-resultado/:id' Component={EditResultado} />
 
                 <Route path='/gestiones' Component={Gestiones} />
