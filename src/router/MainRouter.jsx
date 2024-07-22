@@ -1,17 +1,23 @@
 import * as React from 'react'
 import { BrowserRouter, Routes, Route } from 'react-router-dom'
-import { HomeScreen } from '../pages/HomeScreen/HomeScreen'
-import { AboutScreen } from '../pages/AboutScreen/AboutScreen'
-import { MyNavbar } from '@/components/MyNavbar/MyNavbar'
 import { nav } from '@/constans/nav'
-import { Gestiones } from '@/pages/gestiones/Gestiones'
-import { NotFound } from '@/pages/NotFound/NotFound'
-import { TipoDeGestion } from '@/pages/tipoDeGestion/TipoDeGestion'
-import { Resultados } from '@/pages/resultados/Resultados'
 import { ToastContainer } from 'react-toastify'
 import 'react-toastify/dist/ReactToastify.css';
+
+// Components
+import { MyNavbar } from '@/components/MyNavbar/MyNavbar'
+
+// Pages
+import { Gestiones } from '@/pages/gestiones/Gestiones'
+import { NotFound } from '@/pages/NotFound/NotFound'
+import { TipoDeGestionScreen } from '@/pages/TipoDeGestionScreen/TipoDeGestionScreen'
+import { ResultadosScreen } from '@/pages/resultados/ResultadosScreen'
 import { EditResultado } from '@/pages/resultados/components/EditResultado'
 import { CreateResultado } from '@/pages/resultados/components/CreateResultado'
+import { CreateTipoGestion } from '@/pages/TipoDeGestionScreen/components/CreateTipoGestion'
+import { EditTipoGestion } from '@/pages/TipoDeGestionScreen/components/EditTipoGestion'
+import { HomeScreen } from '@/pages/HomeScreen/HomeScreen'
+import { AboutScreen } from '@/pages/AboutScreen/AboutScreen'
 
 export const MainRouter = () => {
     return (
@@ -29,12 +35,14 @@ export const MainRouter = () => {
 
             <Routes>
                 <Route path='/' Component={HomeScreen} />
-                <Route path='/tipo-gestion' Component={TipoDeGestion} />
-                <Route path='/resultados' Component={Resultados} />
+                <Route path='/tipo-gestion' Component={TipoDeGestionScreen} />
+                <Route path='/resultados' Component={ResultadosScreen} />
                 <Route path='/create-resultado' Component={CreateResultado} />
                 <Route path='/edit-resultado/:id' Component={EditResultado} />
 
                 <Route path='/gestiones' Component={Gestiones} />
+                <Route path='/create-tipo-gestion' Component={CreateTipoGestion} />
+                <Route path='/edit-tipo-gestion' Component={EditTipoGestion} />
 
                 <Route path='/about' Component={AboutScreen} />
 

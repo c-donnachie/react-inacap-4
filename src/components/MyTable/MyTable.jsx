@@ -19,13 +19,11 @@ import {
 import { PlusIcon } from "@/icons/PlusIcon";
 import { EditIcon } from "@/icons/EditIcon";
 import { DeleteIcon } from "@/icons/DeleteIcon";
-import { VerticalDotsIcon } from '@/icons/VerticalDotsIcon';
 import { SearchIcon } from "@/icons/SearchIcon";
-import { formatDate } from "@/utils/format";
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "actions"];
 
-export const MyTable = React.memo(({ data,columns, dataLoading, handleCreate, handleEdit, handleOpenDeleteModal }) => {
+export const MyTable = React.memo(({ data, transformData, columns, dataLoading, handleCreate, handleEdit, handleOpenDeleteModal }) => {
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
     const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));
@@ -36,13 +34,6 @@ export const MyTable = React.memo(({ data,columns, dataLoading, handleCreate, ha
     });
     const [page, setPage] = React.useState(1);
 
-    const transformData = (data) => {
-        return data.map(item => ({
-            id_resultado: item.id_resultado,
-            nombre_resultado: item.nombre_resultado,
-            fecha_registro: formatDate(item.fecha_registro),
-        }));
-    };
 
     const filteredData = React.useMemo(() => {
         if (!data) return [];
@@ -51,7 +42,7 @@ export const MyTable = React.memo(({ data,columns, dataLoading, handleCreate, ha
 
         if (filterValue) {
             transformedData = transformedData.filter((item) =>
-                item.nombre_resultado.toLowerCase().includes(filterValue.toLowerCase())
+                item.nombre.toLowerCase().includes(filterValue.toLowerCase())
             );
         }
 
@@ -95,7 +86,7 @@ export const MyTable = React.memo(({ data,columns, dataLoading, handleCreate, ha
                             </Tooltip>
                         </div>
                         <div
-                            onClick={() => handleOpenDeleteModal(item.id_resultado)}
+                            onClick={() => handleOpenDeleteModal(item.id)}
                         >
                             <Tooltip
                                 color="danger" content="Eliminar">
@@ -198,7 +189,7 @@ export const MyTable = React.memo(({ data,columns, dataLoading, handleCreate, ha
                 ) : "No data found"
             } items={sortedItems}>
                 {!dataLoading && sortedItems.map((item) => (
-                    <TableRow key={item.id_resultado}>
+                    <TableRow key={item.id}>
                         {(columnKey) => <TableCell>{renderCell(item, columnKey)}</TableCell>}
                     </TableRow>
                 ))}

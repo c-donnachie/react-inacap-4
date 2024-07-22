@@ -10,12 +10,22 @@ import { useDisclosure } from '@nextui-org/react'
 import { DeleteResultado } from './components/DeleteResultado'
 import { toast } from 'react-toastify'
 import { columns } from './data'
+import { formatDate } from "@/utils/format";
 
-export const Resultados = React.memo(() => {
+export const ResultadosScreen = React.memo(() => {
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { setSelectedData, setSelectedId, selectedId } = useSelectedData();
     const { data, loading: dataLoading, refetch } = useFetchData(apiGetResultados)
     const navigate = useNavigate()
+
+
+    const transformData = (data) => {
+        return data.map(item => ({
+            id: item.id_resultado,
+            nombre: item.nombre_resultado,
+            fecha_registro: formatDate(item.fecha_registro),
+        }));
+    };
 
     const handleEdit = React.useCallback(async (selectedData) => {
         setSelectedData(selectedData)
@@ -41,6 +51,7 @@ export const Resultados = React.memo(() => {
             <div className='w-[90%]'>
                 <MyTable
                     data={data}
+                    transformData={transformData}
                     columns={columns}
                     dataLoading={dataLoading}
                     handleCreate={() => navigate('/create-resultado')}
