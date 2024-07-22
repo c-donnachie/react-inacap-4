@@ -9,6 +9,7 @@ import { MyModal } from '../../components/MyModal/MyModal'
 import { useDisclosure } from '@nextui-org/react'
 import { DeleteResultado } from './components/DeleteResultado'
 import { toast } from 'react-toastify'
+import { columns } from './data'
 
 export const Resultados = React.memo(() => {
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
@@ -20,12 +21,12 @@ export const Resultados = React.memo(() => {
         setSelectedData(selectedData)
         navigate(`/edit-resultado/${selectedData.id_resultado}`)
     }, [navigate, setSelectedData])
-    
+
     const handleOpenDeleteModal = React.useCallback((id_resultado) => {
         onOpen()
         setSelectedId(id_resultado)
     }, [onOpen, setSelectedId])
-    
+
     const handleDelete = React.useCallback(async () => {
         await apiDeleteResultados(selectedId)
         refetch()
@@ -35,11 +36,12 @@ export const Resultados = React.memo(() => {
 
     return (
         <PrimaryLayout>
-            <h1 className=''>Resultados</h1>
+            <h1 className='mb-4'>Resultados</h1>
 
             <div className='w-[90%]'>
                 <MyTable
                     data={data}
+                    columns={columns}
                     dataLoading={dataLoading}
                     handleCreate={() => navigate('/create-resultado')}
                     handleEdit={handleEdit}

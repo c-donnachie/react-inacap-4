@@ -21,12 +21,11 @@ import { EditIcon } from "@/icons/EditIcon";
 import { DeleteIcon } from "@/icons/DeleteIcon";
 import { VerticalDotsIcon } from '@/icons/VerticalDotsIcon';
 import { SearchIcon } from "@/icons/SearchIcon";
-import { columns } from "../../pages/resultados/data";
 import { formatDate } from "@/utils/format";
 
 const INITIAL_VISIBLE_COLUMNS = ["name", "actions"];
 
-export const MyTable = React.memo(({ data, dataLoading, handleCreate, handleEdit, handleOpenDeleteModal }) => {
+export const MyTable = React.memo(({ data,columns, dataLoading, handleCreate, handleEdit, handleOpenDeleteModal }) => {
     const [filterValue, setFilterValue] = React.useState("");
     const [selectedKeys, setSelectedKeys] = React.useState(new Set([]));
     const [visibleColumns, setVisibleColumns] = React.useState(new Set(INITIAL_VISIBLE_COLUMNS));

@@ -11,15 +11,25 @@ export const CreateResultado = () => {
     const Navigate = useNavigate()
     const [newResultado, setNewResultado] = React.useState({
         nombre_resultado: "",
-        fecha_registro: ""
+        fecha_registro: getCurrentDate()
     })
 
+    const { nombre_resultado } = newResultado
+    const inputRef = React.useRef(null)
+
+    const [errorMessage, setErrorMessage] = React.useState('');
+    const [isInvalid, setIsInvalid] = React.useState(false);
+
     React.useEffect(() => {
-        setNewResultado((prevState) => ({
-            ...prevState,
-            fecha_registro: getCurrentDate()
-        }))
-    }, [])
+        if (inputRef.current) {
+            inputRef.current.focus()
+        }
+        if (nombre_resultado) {
+            setIsInvalid(false);
+            setErrorMessage('');
+        }
+    }, [nombre_resultado])
+
 
     const handleChange = (e) => {
         const { name, value } = e.target
@@ -30,6 +40,11 @@ export const CreateResultado = () => {
     }
 
     const handleSave = async () => {
+        if (nombre_resultado.trim() === '') {
+            setErrorMessage('Ingresa un nombre');
+            setIsInvalid(true);
+            return;
+        }
         await apiCreateResultado(newResultado)
         Navigate('/resultados')
         toast.success('Resultado creado')
@@ -47,6 +62,10 @@ export const CreateResultado = () => {
                     label='Nombre'
                     value={newResultado.nombre_resultado}
                     onChange={handleChange}
+                    ref={inputRef}
+                    isInvalid={isInvalid}
+                    errorMessage={isInvalid ? errorMessage : ''}
+                    color={isInvalid ? 'danger' : ''}
                 />
 
                 <Button
