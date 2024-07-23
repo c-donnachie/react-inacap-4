@@ -1,62 +1,58 @@
 import * as React from 'react'
-import { Button, Input } from '@nextui-org/react'
 import { PrimaryLayout } from '@/layouts/PrimaryLayout/PrimaryLayout'
 import { GoBack } from '@/components/GoBack/GoBack'
-import { useNavigate } from 'react-router-dom'
-import { useSelectedData } from '@/context/SelectedDataContext'
+import {  useNavigate } from 'react-router-dom'
+import { Button, Input, user } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
+import { getCurrentDate } from '@/utils/getCurrentDate'
+import { toast } from 'react-toastify'
+import { apiCreateUsuario } from '@/services/apiUsuarios'
 import * as yup from 'yup'
-import { toast } from 'react-toastify';
-import { apiUpdateCliente } from '@/services/apiClientesService'
 
 const schema = yup.object().shape({
+    id_usuario: yup.string().required('El Rut Usuario es obligatorio'),
     dv: yup.string().required('El Código Verificador es obligatorio'),
     nombres: yup.string().required('Los Nombres son obligatorios'),
     apellidos: yup.string().required('Los Apellidos son obligatorios'),
     email: yup.string().email('El Email no es válido').required('El Email es obligatorio'),
     celular: yup.string().required('El Celular es obligatorio'),
+    username: yup.string().required('El Username es obligatorio'),
+    password: yup.string().required('La Contraseña es obligatoria'),
 })
 
-export const EditCliente = () => {
-    const navigate = useNavigate();
-    const { selectedData } = useSelectedData();
+export const CreateUsuario = () => {
+    const navigate = useNavigate()
 
-    const { register, handleSubmit, formState: { errors }, setValue } = useForm({
-        resolver: yupResolver(schema),
-        defaultValues: {
-            dv: selectedData?.dv || '',
-            nombres: selectedData?.nombres || '',
-            apellidos: selectedData?.apellidos || '',
-            email: selectedData?.email || '',
-            celular: selectedData?.celular || '',
-        }
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema)
     })
 
-    React.useEffect(() => {
-        if (selectedData) {
-            setValue('dv', selectedData.dv)
-            setValue('nombres', selectedData.nombres)
-            setValue('apellidos', selectedData.apellidos)
-            setValue('email', selectedData.email)
-            setValue('celular', selectedData.celular)
-        }
-    }, [selectedData, setValue])
+    const handleSave = async (data) => {
+        const fecha_registro = getCurrentDate();
+        const finalData = { ...data, fecha_registro };
 
-    const handleSaveEdit = async (data) => {
-        await apiUpdateCliente(data, selectedData.id_cliente);
-        navigate('/clientes');
-        toast.success('Cliente actualizado correctamente');
-
+        await apiCreateUsuario(finalData);
+        navigate('/usuarios');
+        toast.success('Usuario creado');
     }
 
     return (
         <PrimaryLayout>
-            <h1 className='text-4xl font-semibold'>Editar cliente</h1>
+            <h1 className='text-4xl font-semibold'>Crear usuario</h1>
 
             <GoBack />
 
-            <form onSubmit={handleSubmit(handleSaveEdit)} className='flex flex-col mt-10 w-[16%] gap-4'>
+            <form onSubmit={handleSubmit(handleSave)} className='flex flex-col mt-10 w-[16%] gap-4'>
+                <Input
+                    {...register('id_usuario')}
+                    type='number'
+                    label='Rut Usuario'
+                    isInvalid={!!errors.id_usuario}
+                    errorMessage={errors.id_usuario?.message}
+                    color={errors.id_usuario ? 'danger' : ''}
+                />
+
                 <Input
                     {...register('dv')}
                     type='text'
@@ -100,6 +96,24 @@ export const EditCliente = () => {
                     isInvalid={!!errors.celular}
                     errorMessage={errors.celular?.message}
                     color={errors.celular ? 'danger' : ''}
+                />
+
+                <Input
+                    {...register('username')}
+                    type='text'
+                    label='Username'
+                    isInvalid={!!errors.username}
+                    errorMessage={errors.username?.message}
+                    color={errors.username ? 'danger' : ''}
+                />
+
+                <Input
+                    {...register('password')}
+                    type='password'
+                    label='Contraseña'
+                    isInvalid={!!errors.password}
+                    errorMessage={errors.password?.message}
+                    color={errors.password ? 'danger' : ''}
                 />
 
                 <Button

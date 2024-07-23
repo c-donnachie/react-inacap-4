@@ -5,30 +5,30 @@ import { MyModal } from '@/components/MyModal/MyModal';
 import { toast } from 'react-toastify';
 import { useNavigate } from 'react-router-dom';
 import { useFetchData } from '@/hooks/useFetchData'
-import { apiGetClientes } from '@/services/apiClientesService';
 import { formatDate } from "@/utils/format";
 import { columns } from './data';
 import { useSelectedData } from '@/context/SelectedDataContext';
 import { useDisclosure } from '@nextui-org/react';
 import { DeleteConfirmation } from '@/components/DeleteConfirmation/DeleteConfirmation';
-import { apiDeleteCliente } from '@/services/apiClientesService';
+import { apiDeleteUsuario, apiGetUsuarios } from '@/services/apiUsuarios';
 
-
-export const ClientesScreen = () => {
+export const UsuariosScreen = () => {
     const navigate = useNavigate()
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { setSelectedData, setSelectedId, selectedId } = useSelectedData();
-    const { data, dataLoading, refetch } = useFetchData(apiGetClientes)
+    const { data, dataLoading, refetch } = useFetchData(apiGetUsuarios)
 
     //TODO: mejorar la transfromacion de datos
     const transformData = (data) => {
         return data.map(item => ({
-            id: item.id_cliente,
+            id: item.id_usuario,
             dv: item.dv,
             nombre: item.nombres,
             apellidos: item.apellidos,
             email: item.email,
             celular: item.celular,
+            username: item.username,
+            password: item.password,
             fecha_registro: formatDate(item.fecha_registro),
         }));
     };
@@ -41,33 +41,35 @@ export const ClientesScreen = () => {
 
     const handleEdit = React.useCallback(async (selectedData) => {
         setSelectedData({
-            id_cliente: selectedData.id,
+            id_usuario: selectedData.id,
             dv: selectedData.dv,
             nombres: selectedData.nombre,
             apellidos: selectedData.apellidos,
             email: selectedData.email,
             celular: selectedData.celular,
+            username: selectedData.username,
+            password: selectedData.password,
             fecha_registro: selectedData.fecha_registro,
         })
-        navigate(`/clientes/edit`)
+        navigate(`/usuarios/edit`)
     }, [navigate, setSelectedData])
 
 
     const handleDelete = React.useCallback(async () => {
         try {
-            await apiDeleteCliente(selectedId)
-            toast.success('Cliente eliminado correctamente')
+            await apiDeleteUsuario(selectedId)
+            toast.success('Usuario eliminado correctamente')
             refetch()
             onClose()
         } catch (error) {
-            toast.error('El cliente no se puede eliminar, tiene registros asociados')
+            toast.error('El usuario no se puede eliminar, tiene registros asociados')
             onClose()
         }
     }, [])
 
     return (
         <PrimaryLayout>
-            <h1 className='mb-4'>Clientes</h1>
+            <h1 className='mb-4'>Usuarios</h1>
 
             <div className='w-[90%]'>
                 <MyTable
@@ -75,7 +77,7 @@ export const ClientesScreen = () => {
                     transformData={transformData}
                     columns={columns}
                     dataLoading={dataLoading}
-                    handleCreate={() => navigate('/clientes/create')}
+                    handleCreate={() => navigate('/usuarios/create')}
                     handleEdit={handleEdit}
                     handleOpenDeleteModal={handleOpenDeleteModal}
                 />
@@ -85,7 +87,7 @@ export const ClientesScreen = () => {
                 title='Agregar resultado'
                 content={
                     <DeleteConfirmation
-                        text='el tipo de gestion'
+                        text='el usuario'
                         selectedId={selectedId}
                         onClose={onClose}
                         handleDelete={handleDelete}

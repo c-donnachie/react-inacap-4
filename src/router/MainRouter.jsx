@@ -21,6 +21,9 @@ import { AboutScreen } from '@/pages/AboutScreen/AboutScreen'
 import { ClientesScreen } from '@/pages/ClientesScreen/ClientesScreen';
 import { CreateCliente } from '@/pages/ClientesScreen/components/CreateCliente';
 import { EditCliente } from '@/pages/ClientesScreen/components/EditCliente';
+import { UsuariosScreen } from '@/pages/UsuariosScreen/UsuariosScreen';
+import { CreateUsuario } from '@/pages/UsuariosScreen/components/CreateUsuario';
+import { EditUsuario } from '@/pages/UsuariosScreen/components/EditUsuario';
 
 export const MainRouter = () => {
     return (
@@ -50,6 +53,10 @@ export const MainRouter = () => {
                 <Route path='/clientes' Component={ClientesScreen} />
                 <Route path='/clientes/create' Component={CreateCliente} />
                 <Route path='/clientes/edit' Component={EditCliente} />
+
+                <Route path='/usuarios' Component={UsuariosScreen} />
+                <Route path='/usuarios/create' Component={CreateUsuario} />
+                <Route path='/usuarios/edit' Component={EditUsuario} />
 
                 <Route path='/about' Component={AboutScreen} />
 

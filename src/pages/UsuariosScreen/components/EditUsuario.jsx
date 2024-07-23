@@ -8,7 +8,7 @@ import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import * as yup from 'yup'
 import { toast } from 'react-toastify';
-import { apiUpdateCliente } from '@/services/apiClientesService'
+import { apiUpdateUsuario } from '@/services/apiUsuarios'
 
 const schema = yup.object().shape({
     dv: yup.string().required('El Código Verificador es obligatorio'),
@@ -16,12 +16,15 @@ const schema = yup.object().shape({
     apellidos: yup.string().required('Los Apellidos son obligatorios'),
     email: yup.string().email('El Email no es válido').required('El Email es obligatorio'),
     celular: yup.string().required('El Celular es obligatorio'),
+    username: yup.string().required('El Username es obligatorio'),
+    password: yup.string().required('La Contraseña es obligatoria'),
 })
 
-export const EditCliente = () => {
+export const EditUsuario = () => {
     const navigate = useNavigate();
     const { selectedData } = useSelectedData();
 
+    // Carga los datos de selectedData en el formulario (schema)
     const { register, handleSubmit, formState: { errors }, setValue } = useForm({
         resolver: yupResolver(schema),
         defaultValues: {
@@ -30,6 +33,8 @@ export const EditCliente = () => {
             apellidos: selectedData?.apellidos || '',
             email: selectedData?.email || '',
             celular: selectedData?.celular || '',
+            username: selectedData?.username || '',
+            password: selectedData?.password || '',
         }
     })
 
@@ -40,19 +45,20 @@ export const EditCliente = () => {
             setValue('apellidos', selectedData.apellidos)
             setValue('email', selectedData.email)
             setValue('celular', selectedData.celular)
+            setValue('username', selectedData.username)
         }
     }, [selectedData, setValue])
 
     const handleSaveEdit = async (data) => {
-        await apiUpdateCliente(data, selectedData.id_cliente);
-        navigate('/clientes');
-        toast.success('Cliente actualizado correctamente');
+        await apiUpdateUsuario(data, selectedData.id_usuario);
+        navigate('/usuarios');
+        toast.success('Usuario actualizado correctamente');
 
     }
 
     return (
         <PrimaryLayout>
-            <h1 className='text-4xl font-semibold'>Editar cliente</h1>
+            <h1 className='text-4xl font-semibold'>Editar usuario</h1>
 
             <GoBack />
 
@@ -100,6 +106,24 @@ export const EditCliente = () => {
                     isInvalid={!!errors.celular}
                     errorMessage={errors.celular?.message}
                     color={errors.celular ? 'danger' : ''}
+                />
+
+                <Input
+                    {...register('username')}
+                    type='text'
+                    label='Username'
+                    isInvalid={!!errors.username}
+                    errorMessage={errors.username?.message}
+                    color={errors.username ? 'danger' : ''}
+                />
+
+                <Input
+                    {...register('password')}
+                    type='password'
+                    label='Contraseña'
+                    isInvalid={!!errors.password}
+                    errorMessage={errors.password?.message}
+                    color={errors.password ? 'danger' : ''}
                 />
 
                 <Button
