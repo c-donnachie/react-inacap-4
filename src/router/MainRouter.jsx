@@ -18,6 +18,9 @@ import { CreateTipoGestion } from '@/pages/TipoDeGestionScreen/components/Create
 import { EditTipoGestion } from '@/pages/TipoDeGestionScreen/components/EditTipoGestion'
 import { HomeScreen } from '@/pages/HomeScreen/HomeScreen'
 import { AboutScreen } from '@/pages/AboutScreen/AboutScreen'
+import { ClientesScreen } from '@/pages/ClientesScreen/ClientesScreen';
+import { CreateCliente } from '@/pages/ClientesScreen/components/CreateCliente';
+import { EditCliente } from '@/pages/ClientesScreen/components/EditCliente';
 
 export const MainRouter = () => {
     return (
@@ -43,6 +46,10 @@ export const MainRouter = () => {
                 <Route path='/gestiones' Component={Gestiones} />
                 <Route path='/create-tipo-gestion' Component={CreateTipoGestion} />
                 <Route path='/edit-tipo-gestion' Component={EditTipoGestion} />
+
+                <Route path='/clientes' Component={ClientesScreen} />
+                <Route path='/clientes/create' Component={CreateCliente} />
+                <Route path='/clientes/edit' Component={EditCliente} />
 
                 <Route path='/about' Component={AboutScreen} />
 

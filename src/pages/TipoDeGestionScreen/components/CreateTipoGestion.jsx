@@ -15,6 +15,7 @@ export const CreateTipoGestion = () => {
     })
 
     const { nombre_resultado } = newResultado
+
     const inputRef = React.useRef(null)
 
     const [errorMessage, setErrorMessage] = React.useState('');
@@ -49,6 +50,7 @@ export const CreateTipoGestion = () => {
         Navigate('/resultados')
         toast.success('Resultado creado')
     }
+    
     return (
         <PrimaryLayout>
             <h1 className='text-4xl font-semibold'>Crear tipo gestion</h1>
