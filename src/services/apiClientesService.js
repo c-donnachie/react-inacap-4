@@ -40,3 +40,42 @@ export const apiCreateCliente = async (data) => {
         throw new Error(error.message);
     }
 }
+
+export const apiDeleteCliente = async (id) => {
+    const requestOptions = {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+    }
+    try {
+        const res = await fetch(`${BASE_URL}/${route}/${id}`, requestOptions);
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}
+
+export const apiUpdateCliente = async (data, id) => {
+    const requestOptions = {
+        method: 'PATCH',
+        headers: {
+            'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(data)
+    }
+    try {
+        const res = await fetch(`${BASE_URL}/${route}/${id}`, requestOptions);
+        if (!res.ok) {
+            throw new Error('Network response was not ok');
+        }
+        const data = await res.json();
+        return data;
+    } catch (error) {
+        throw new Error(error.message);
+    }
+}

@@ -10,14 +10,17 @@ import { formatDate } from "@/utils/format";
 import { columns } from './data';
 import { useSelectedData } from '@/context/SelectedDataContext';
 import { useDisclosure } from '@nextui-org/react';
+import { DeleteConfirmation } from '@/components/DeleteConfirmation/DeleteConfirmation';
+import { apiDeleteCliente } from '@/services/apiClientesService';
 
 
 export const ClientesScreen = () => {
     const navigate = useNavigate()
     const { isOpen, onOpen, onOpenChange, onClose } = useDisclosure();
     const { setSelectedData, setSelectedId, selectedId } = useSelectedData();
-    const { data, dataLoading } = useFetchData(apiGetClientes)
+    const { data, dataLoading, refetch } = useFetchData(apiGetClientes)
 
+    //TODO: mejorar la transfromacion de datos
     const transformData = (data) => {
         return data.map(item => ({
             id: item.id_cliente,
@@ -37,13 +40,28 @@ export const ClientesScreen = () => {
     }, [onOpen, setSelectedId])
 
     const handleEdit = React.useCallback(async (selectedData) => {
-        setSelectedData(selectedData)
-        navigate(`/edit-tipo-gestion`)
+        setSelectedData({
+            id_cliente: selectedData.id,
+            dv: selectedData.dv,
+            nombres: selectedData.nombre,
+            apellidos: selectedData.apellidos,
+            email: selectedData.email,
+            celular: selectedData.celular,
+            fecha_registro: selectedData.fecha_registro,
+        })
+        navigate(`/clientes/edit`)
     }, [navigate, setSelectedData])
 
 
     const handleDelete = React.useCallback(async () => {
-
+        try {
+            await apiDeleteCliente(selectedId)
+            toast.success('Cliente eliminado correctamente')
+            refetch()
+            onClose()
+        } catch (error) {
+            toast.error('Error al eliminar el cliente')
+        }
     }, [])
 
     return (
@@ -61,6 +79,22 @@ export const ClientesScreen = () => {
                     handleOpenDeleteModal={handleOpenDeleteModal}
                 />
             </div>
+
+            <MyModal
+                title='Agregar resultado'
+                content={
+                    <DeleteConfirmation
+                        text='el tipo de gestion'
+                        selectedId={selectedId}
+                        onClose={onClose}
+                        handleDelete={handleDelete}
+                    />
+                }
+                isOpen={isOpen}
+                onOpen={onOpen}
+                onOpenChange={onOpenChange}
+                onClose={onClose}
+            />
         </PrimaryLayout>
     )
 }

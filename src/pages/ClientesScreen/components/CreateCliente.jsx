@@ -1,14 +1,14 @@
 import * as React from 'react'
 import { PrimaryLayout } from '@/layouts/PrimaryLayout/PrimaryLayout'
 import { GoBack } from '@/components/GoBack/GoBack'
-import { useNavigate } from 'react-router-dom'
+import {  useNavigate } from 'react-router-dom'
 import { Button, Input } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
-import * as yup from 'yup'
 import { apiCreateCliente } from '@/services/apiClientesService'
 import { getCurrentDate } from '@/utils/getCurrentDate'
 import { toast } from 'react-toastify'
+import * as yup from 'yup'
 
 const schema = yup.object().shape({
     id_cliente: yup.string().required('El Rut Cliente es obligatorio'),
@@ -29,7 +29,7 @@ export const CreateCliente = () => {
     const handleSave = async (data) => {
         const fecha_registro = getCurrentDate();
         const finalData = { ...data, fecha_registro };
-        console.log(finalData);
+
         await apiCreateCliente(finalData);
         navigate('/clientes');
         toast.success('Resultado creado');

@@ -1,6 +1,6 @@
 const columns = [
-    { name: "Rut", uid: "id" },
-    { name: "Dv", uid: "dv" },
+    { name: "Rut", uid: "id", sortable: true },
+    { name: "Dv", uid: "dv", sortable: true },
     { name: "Nombres", uid: "nombre", sortable: true },
     { name: "apellidos", uid: "apellidos", sortable: true },
     { name: "Email", uid: "email", sortable: true },

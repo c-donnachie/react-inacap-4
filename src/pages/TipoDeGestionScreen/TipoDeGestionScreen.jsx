@@ -82,6 +82,7 @@ export const TipoDeGestionScreen = () => {
         onOpenChange={onOpenChange}
         onClose={onClose}
       />
+      
     </PrimaryLayout>
   )
 }
