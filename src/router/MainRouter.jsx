@@ -8,7 +8,6 @@ import 'react-toastify/dist/ReactToastify.css';
 import { MyNavbar } from '@/components/MyNavbar/MyNavbar'
 
 // Pages
-import { Gestiones } from '@/pages/gestiones/Gestiones'
 import { NotFound } from '@/pages/NotFound/NotFound'
 import { TipoDeGestionScreen } from '@/pages/TipoDeGestionScreen/TipoDeGestionScreen'
 import { ResultadosScreen } from '@/pages/resultados/ResultadosScreen'
@@ -24,6 +23,9 @@ import { EditCliente } from '@/pages/ClientesScreen/components/EditCliente';
 import { UsuariosScreen } from '@/pages/UsuariosScreen/UsuariosScreen';
 import { CreateUsuario } from '@/pages/UsuariosScreen/components/CreateUsuario';
 import { EditUsuario } from '@/pages/UsuariosScreen/components/EditUsuario';
+import { GestionesScreen } from '@/pages/GestionesScreen/GestionesScreen';
+import { CreateGestion } from '@/pages/GestionesScreen/components/CreateGestion';
+import { EditGestion } from '@/pages/GestionesScreen/components/EditGestion';
 
 export const MainRouter = () => {
     return (
@@ -46,7 +48,6 @@ export const MainRouter = () => {
                 <Route path='/create-resultado' Component={CreateResultado} />
                 <Route path='/edit-resultado/:id' Component={EditResultado} />
 
-                <Route path='/gestiones' Component={Gestiones} />
                 <Route path='/create-tipo-gestion' Component={CreateTipoGestion} />
                 <Route path='/edit-tipo-gestion' Component={EditTipoGestion} />
 
@@ -57,6 +58,10 @@ export const MainRouter = () => {
                 <Route path='/usuarios' Component={UsuariosScreen} />
                 <Route path='/usuarios/create' Component={CreateUsuario} />
                 <Route path='/usuarios/edit' Component={EditUsuario} />
+
+                <Route path='/gestiones' Component={GestionesScreen} />
+                <Route path='/gestiones/create' Component={CreateGestion} />
+                <Route path='/gestiones/edit' Component={EditGestion} />
 
                 <Route path='/about' Component={AboutScreen} />
 

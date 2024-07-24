@@ -2,7 +2,7 @@ import * as React from 'react'
 import { PrimaryLayout } from '@/layouts/PrimaryLayout/PrimaryLayout'
 import { GoBack } from '@/components/GoBack/GoBack'
 import {  useNavigate } from 'react-router-dom'
-import { Button, Input, user } from '@nextui-org/react'
+import { Button, Input } from '@nextui-org/react'
 import { useForm } from 'react-hook-form'
 import { yupResolver } from '@hookform/resolvers/yup'
 import { getCurrentDate } from '@/utils/getCurrentDate'
@@ -56,6 +56,7 @@ export const CreateUsuario = () => {
                 <Input
                     {...register('dv')}
                     type='text'
+                    maxLength={1}
                     label='Codigo verificador'
                     isInvalid={!!errors.dv}
                     errorMessage={errors.dv?.message}

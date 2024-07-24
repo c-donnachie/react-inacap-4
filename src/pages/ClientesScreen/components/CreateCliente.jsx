@@ -54,6 +54,7 @@ export const CreateCliente = () => {
                 <Input
                     {...register('dv')}
                     type='text'
+                    maxLength={1}
                     label='Codigo verificador'
                     isInvalid={!!errors.dv}
                     errorMessage={errors.dv?.message}
